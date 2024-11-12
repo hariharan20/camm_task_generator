@@ -170,10 +170,12 @@ def fillInNew(sentence):
     nameCounter         = 0
     finalSentence       = []
     explanation         = []
+    list_of_locations = []
     for word in sentence.split(' '):
         # fill in a location
         if word == 'LOCATION':
             finalSentence.append( locations[int(location_indices[locationCounter])] )
+            list_of_locations.append(locations[int(location_indices[locationCounter])])
             locationCounter += 1
         # or an item
         elif word == 'ITEM':
@@ -237,7 +239,7 @@ def fillInNew(sentence):
     # then make a sentence again out of the created list
     final_command = ' '.join(finalSentence)
     final_explanation = ' '.join(explanation)
-    return final_command + "   " + final_explanation
+    return final_command + "   " + final_explanation , list_of_locations
 
 
 # the tests are defined here
@@ -266,8 +268,12 @@ def fillInNew(sentence):
 
 def camm_test():
     situation = random.choice(camm_sentences)
-    print(fillInNew(situation))
-    print('\n\n')
+    # print(fillInNew(situation))
+    # print('\n\n')
+    new_task = fillInNew(situation)
+    print(new_task)
+    return new_task
+
 
 #############################################  MAIN LOOP ####################################
 
