@@ -45,39 +45,43 @@ cat3Situations  = []
 camm_sentences = []
 names           = []
 # get rid of empty lines and do not use anything that starts with a '#'
-for loc in [location.strip('\n') for location in open('location_camm.txt', 'r').readlines()]:
+import os 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+# print(dir_path)
+for loc in [location.strip('\n') for location in open(dir_path+ '/location_camm.txt', 'r').readlines()]:
     if loc != '':
         if loc[0] != '#':
             locations.append(loc)
-for loc_cat in [location_category.strip('\n') for location_category in open('location_categories.txt', 'r').readlines()]:
+# print(locations)
+for loc_cat in [location_category.strip('\n') for location_category in open(dir_path+ '/location_categories.txt', 'r').readlines()]:
     if loc_cat != '':
         if loc_cat[0] != '#':
             location_categories.append(loc_cat)
-for it  in [item.strip('\n')     for item     in open('items.txt',   'r').readlines()]:
+for it  in [item.strip('\n')     for item     in open(dir_path+ '/items.txt',   'r').readlines()]:
     if it  != '':
         if it[0] != '#':
             items.append(it)
-for item_cat in [item_category.strip('\n') for item_category in open('item_categories.txt', 'r').readlines()]:
+for item_cat in [item_category.strip('\n') for item_category in open(dir_path+ '/item_categories.txt', 'r').readlines()]:
     if item_cat != '':
         if item_cat[0] != '#':
             item_categories.append(item_cat)
 
-for sentence in [str(sent).strip('\n') for sent in open('camm_sentences.txt' , 'r').readlines()]:
+for sentence in [str(sent).strip('\n') for sent in open(dir_path+ '/camm_sentences.txt' , 'r').readlines()]:
     if sentence != '':
         if sentence[0] != '#':
             camm_sentences.append(sentence)
 
-for sentence in [str(sent).strip('\n') for sent in open('cat1Sentences.txt' , 'r').readlines()]:
+for sentence in [str(sent).strip('\n') for sent in open(dir_path+ '/cat1Sentences.txt' , 'r').readlines()]:
     if sentence != '':
         if sentence[0] != '#':
             cat1Sentences.append(sentence)
-for sentence in [str(sent).strip('\n') for sent in open('cat2Sentences.txt' , 'r').readlines()]:
+for sentence in [str(sent).strip('\n') for sent in open(dir_path+ '/cat2Sentences.txt' , 'r').readlines()]:
     if sentence != '':
         if sentence[0] != '#':
             cat2Sentences.append(sentence)
 situations  = []
 questions   = []
-for sit in [str(sent).strip('\n') for sent in open('cat3Situations.txt' , 'r').readlines()]:
+for sit in [str(sent).strip('\n') for sent in open(dir_path+ '/cat3Situations.txt' , 'r').readlines()]:
     if sit != '':
         if sit[0] != '#':
             if sit.split()[0] == 'situation:':
@@ -85,7 +89,7 @@ for sit in [str(sent).strip('\n') for sent in open('cat3Situations.txt' , 'r').r
             if sit.split()[0] == 'question:':
                 questions.append( sit )
 cat3Situations = zip( situations, questions )
-for name in [nam.strip('\n')     for nam     in open('names.txt',   'r').readlines()]:
+for name in [nam.strip('\n')     for nam     in open(dir_path+ '/names.txt',   'r').readlines()]:
     if name  != '':
         if name[0] != '#':
             names.append(name)
@@ -171,10 +175,15 @@ def fillInNew(sentence):
     finalSentence       = []
     explanation         = []
     list_of_locations = []
+    print(locations)
     for word in sentence.split(' '):
+        # print(word)
         # fill in a location
         if word == 'LOCATION':
+            # print(locations)
             finalSentence.append( locations[int(location_indices[locationCounter])] )
+            # print(finalSentence)
+            # print(locations[int(location_indices[locationCounter])])
             list_of_locations.append(locations[int(location_indices[locationCounter])])
             locationCounter += 1
         # or an item
@@ -206,6 +215,7 @@ def fillInNew(sentence):
         # perhaps a location with a comma or dot?
         elif word[:-1] == 'LOCATION':
             finalSentence.append( locations[int(location_indices[locationCounter])] + word[-1])
+            list_of_locations.append(locations[int(location_indices[locationCounter])])
             locationCounter += 1
         # or an item with a comma or dot or whatever
         elif word[:-1] == 'ITEM':
@@ -239,8 +249,8 @@ def fillInNew(sentence):
     # then make a sentence again out of the created list
     final_command = ' '.join(finalSentence)
     final_explanation = ' '.join(explanation)
-    return final_command + "   " + final_explanation , list_of_locations
-
+    # return final_command + "   " + final_explanation , list_of_locations
+    return final_command , list_of_locations
 
 # the tests are defined here
 

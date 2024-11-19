@@ -1,7 +1,7 @@
 # list of locations
 room1
 room2
-room3 
+room3
 room4
 room5
 left_open_space
